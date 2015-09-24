@@ -4081,8 +4081,13 @@
       return function(number, precision) {
         precision = precision ? toInteger(precision) : 0;
         if (precision) {
-          precision = pow(10, precision);
-          return func(number * precision) / precision;
+          // Shift decimal point with exponential operations
+          number = (+number + 'e').split('e');
+          number = func(number[0] + 'e' + (+number[1] + precision));
+          // Shift back
+          number = (number + 'e').split('e');
+          return +(number[0] + 'e' + (number[1] - precision));
+
         }
         return func(number);
       };

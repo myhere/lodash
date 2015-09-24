@@ -11362,6 +11362,7 @@
       }
     });
   }());
+
   /*--------------------------------------------------------------------------*/
 
   QUnit.module('lodash.mapKeys');
@@ -16245,10 +16246,13 @@
     });
 
     QUnit.test('`_.' + methodName + '` should return a rounded number with a positive precision', function(assert) {
-      assert.expect(1);
+      assert.expect(2);
 
       var actual = func(4.016, 2);
       assert.strictEqual(actual, isFloor ? 4.01 : 4.02);
+
+      actual = func(4.1, 2);
+      assert.strictEqual(actual, 4.1);
     });
 
     QUnit.test('`_.' + methodName + '` should return a rounded number with a negative precision', function(assert) {
@@ -16256,6 +16260,20 @@
 
       var actual = func(4160, -2);
       assert.strictEqual(actual, isFloor ? 4100 : 4200);
+    });
+
+    QUnit.test('`_.' + methodName + '` should return a rounded number with exponential values and precision', function(assert) {
+      assert.expect(3);
+
+      var actual = func(5e1, 2);
+      assert.strictEqual(actual, 50);
+
+      actual = func('5e', 1);
+      assert.strictEqual(_.isNaN(actual), true);
+
+      actual = func('5e1e1', 1);
+      assert.strictEqual(_.isNaN(actual), true);
+
     });
   });
 
